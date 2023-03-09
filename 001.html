@@ -666,7 +666,8 @@ blockquote {
 	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
 }
 	
-</style></head><body><article id="2ec06c87-a925-4dfb-b6da-07498c6002f1" class="page sans"><header><h1 class="page-title">大規模言語モデル上で動作する仮想ライブラリを使用した文章の意味分割</h1></header><div class="page-body"><h2 id="198d139e-6ce7-4595-95d0-7eb9beb1a4df" class="">はじめに</h2><p id="874d35e2-043a-448e-9540-674089464077" class="">文章は、主語、述語、目的語などの要素から構成されます。意味分割を行うことで、文章全体を小さい単位に分割することで会話を適切に分割できます</p><p id="99eb9b71-3391-4db8-be1f-d0a544fdfc94" class="">また、最近のAIは自然言語処理モデルを採用しているにもかかわらず、ある程度のPythonのシミュレーションが可能です。今回は、この技術を応用する方針となっています。</p><h2 id="e75b28f8-0bda-44bf-a79d-98687b433e0c" class="">動作確認環境</h2><p id="d97532b9-77eb-4f61-9d5c-d4c6a8443a0e" class="">ChatGPT <a href="https://help.openai.com/en/articles/6825453-chatgpt-release-notes">ChatGPT Feb 13 Version</a> 23/3/10時点
+</style></head><body>
+	<article id="2ec06c87-a925-4dfb-b6da-07498c6002f1" class="page sans"><header><h1 class="page-title">大規模言語モデル上で動作する仮想ライブラリを使用した文章の意味分割</h1></header><div class="page-body"><h2 id="198d139e-6ce7-4595-95d0-7eb9beb1a4df" class="">はじめに</h2><p id="874d35e2-043a-448e-9540-674089464077" class="">文章は、主語、述語、目的語などの要素から構成されます。意味分割を行うことで、文章全体を小さい単位に分割することで会話を適切に分割できます</p><p id="99eb9b71-3391-4db8-be1f-d0a544fdfc94" class="">また、最近のAIは自然言語処理モデルを採用しているにもかかわらず、ある程度のPythonのシミュレーションが可能です。今回は、この技術を応用する方針となっています。</p><h2 id="e75b28f8-0bda-44bf-a79d-98687b433e0c" class="">動作確認環境</h2><p id="d97532b9-77eb-4f61-9d5c-d4c6a8443a0e" class="">ChatGPT <a href="https://help.openai.com/en/articles/6825453-chatgpt-release-notes">ChatGPT Feb 13 Version</a> 23/3/10時点
 NotionAI 23/3/10時点</p><h2 id="5aa47155-dd5c-4ebc-b097-5d8613753716" class="">仮想ライブラリについて</h2><p id="15775bc9-7c4f-4f54-8228-584152444570" class="">仮想ライブラリを使用することにより、AIシステムは、存在しないライブラリを柔軟に定義することができるようになります。その結果、より良い出力を得ることができます。仮想ライブラリが使われることで、AIシステムの柔軟性が向上し、より高度な処理が可能になります。この技術は、現在のAI開発において重要な役割を果たすと思っています
 </p><h2 id="c1f2a976-8ead-4b4a-8fa6-ae88813347b3" class="">仮想ライブラリ使い方</h2><p id="d07bf3e9-5fda-4f2a-baf0-7eb2252ce0ac" class="">まず、仮想的なライブラリを定義します。これにより、文書の構造と文法的な規則を明確にすることができます。例えば、今回は文章を意味に分割することになります。これにより、文書の意味をより正確に表現することができます。</p><ul id="b4448a71-15b2-4e8a-8bd8-23f26ff5fcc6" class="toggle"><li><details open=""><summary>環境の用意</summary><p id="8b01429b-d538-4ca5-8701-456eff163e30" class="block-color-gray">人工知能用のスクリプトの入出力例は、開発中の他のライブラリに含まれているため、現時点では説明ができません。ご了承ください。</p><ul id="da84a6cd-e2c7-42f9-97cb-5dfea63d0efd" class="toggle"><li><details open=""><summary>&lt;&lt;人工知能用スクリプト&gt;&gt;</summary><p id="afdbaed5-66ed-4a77-bd91-0ad1ad5afec0" class="">[テンプレート]形式で[input]を疑似コードとして実行し[output]を出力すること
 [入出力例]等をしっかり参考にし[テンプレート]形式で出力すること
@@ -701,13 +702,15 @@ print(response.status_code)
 200</li></ol></details></li></ul></details></li></ul><p id="d82fb3e5-d4fc-4646-a1ce-cbc1e83e05d0" class="">&lt;&lt;人工知能用スクリプト&gt;&gt;をプロンプトに貼り付けます
 その後仮想ライブラリの定義に移ります</p></details></li></ul><ul id="38af6287-a1de-44b1-ba5e-575cd0dc5f40" class="toggle"><li><details open=""><summary>仮想ライブラリの定義</summary><p id="0a20c621-92b9-46c3-8f9f-a2071e238589" class="">意味分割クラスには、文章を意味ごとに分割する<code>分割()</code>メソッドがあります。このメソッドは、引数として文章を受け取り、意味ごとに分割された文字列リストを返します。
 
-1,2の定義をプロンプトに貼り付けます</p><ol type="1" id="d53b2181-f96a-49eb-9b5f-c22351ff0c63" class="numbered-list" start="1"><li>[意味分割]クラスの定義<pre id="4f9285de-778f-4fb3-bb5d-ccee9ccad8d8" class="code code-wrap"><code>classDiagram
+1,2の定義をプロンプトに貼り付けます</p><ol type="1" id="d53b2181-f96a-49eb-9b5f-c22351ff0c63" class="numbered-list" start="1"><li>[意味分割]クラスの定義<pre id="4f9285de-778f-4fb3-bb5d-ccee9ccad8d8" class="code code-wrap">
+	<div class="mermaid">
+	classDiagram
     class 意味分割{
         +分割(文章) list(文字列)
     }
-
-</code></pre></li></ol><ol type="1" id="bf61b138-8eef-4dad-bb40-86910a253942" class="numbered-list" start="2"><li>分割関数の定義<pre id="efd610c3-e443-4ac3-983c-e8e6c7eb0edd" class="code code-wrap"><code>sequenceDiagram
-    participant 呼び出し元
+</div></pre></li></ol><ol type="1" id="bf61b138-8eef-4dad-bb40-86910a253942" class="numbered-list" start="2"><li>分割関数の定義<pre id="efd610c3-e443-4ac3-983c-e8e6c7eb0edd" class="code code-wrap"><div class="mermaid">
+	sequenceDiagram
+	participant 呼び出し元
     participant 意味分割
     participant DB
     呼び出し元-&gt;&gt;意味分割: 分割 \文章:str
@@ -717,8 +720,7 @@ Note right of 呼び出し元: 加工したい文章を送る
 Note right of DB: 文章を意味ごとに分割する
     DB--&gt;&gt;意味分割: Res \list(str)
     意味分割--&gt;&gt;呼び出し元: Res \list(str)
-
-</code></pre></li></ol><p id="7f4747a9-433e-4005-a4b8-f8a61a33caa8" class="">
+</div></pre></li></ol><p id="7f4747a9-433e-4005-a4b8-f8a61a33caa8" class="">
 </p></details></li></ul><ul id="4452ed00-771a-4a4c-a0c6-9dad552d9923" class="toggle"><li><details open=""><summary>仮想ライブラリの使い方</summary><p id="4d4e3730-d87b-4277-83dc-d294da6b2fc8" class="">仮想ライブラリを使用する方法は以下のとおりです。仮想ライブラリであっても、Pythonから通常通り呼び出すことができます。
 
 作成したプログラムをプロンプト作成例のように加工してプロンプトとして渡してください</p><ul id="3e1d2e83-0ec8-4dd0-865a-7df70b2754f0" class="toggle"><li><details open=""><summary>プログラミング方法</summary><ol type="1" id="2fc22818-fb1b-4513-8a55-ca1f27b3158f" class="numbered-list" start="1"><li>意味分割クラスをインスタンス化します。<pre id="c00aa349-1a21-49ae-9f55-26007a2e3408" class="code code-wrap"><code>analyzer = 意味分割()</code></pre></li></ol><ol type="1" id="31ba4485-f397-4233-8fc4-834d0f61c98f" class="numbered-list" start="2"><li>分割メソッドを使用して、文章を意味ごとに分割します。例えば、以下のようにします。<pre id="92791fe2-531d-4e1a-bd75-200da4dbe46e" class="code code-wrap"><code>text = &quot;朝目が覚めたら空がきれいだったスマホを見たら遅刻が確定していた&quot;
@@ -742,4 +744,7 @@ print(意味分割.分割(&quot;庭には二羽鶏がいてよく柿食う客は
 print(意味分割.分割(&quot;夢の中で私を追いかけてきた大きなお化けはとても凶暴に見えたが本人は怖がっていそうだった&quot;))
 [output]
 [&#x27;夢の中で私を追いかけてきた&#x27;, &#x27;大きなお化けは&#x27;, &#x27;とても凶暴に見えたが&#x27;, &#x27;本人は怖がっていそうだった&#x27;]</li></ol></details></li></ul><h2 id="3aae6cee-42ab-4ae5-82c7-eb97b4da82b1" class="">まとめ</h2><p id="9c081388-01fa-418d-9c98-0a85879eba01" class="">今回の手法は、Pythonをエミュレートした言語モデル上に存在しないライブラリを作成することで動くものを作成することができました。開発するためには、Pythonの基本的な理解が必要であり、また、Pythonの特性を理解することが重要です。
-またこの仮想ライブラリはは、文字列のコピー＆ペーストで簡単に実行できるため、非常に便利です。また、クラスなどに関しては、markdownを使わずにPythonで直接書くことができます。ただし、入出力例を5個程度準備しないと思ったように動かないため、入出力例を定義するのは手間がかかります。入出力例を準備する際には、意図した動作を確認できるように、多様なケースをカバーするように努めましょう。また、テスト駆動開発のようなアプローチも有益であると考えられます。</p></div></article></body></html>
+またこの仮想ライブラリはは、文字列のコピー＆ペーストで簡単に実行できるため、非常に便利です。また、クラスなどに関しては、markdownを使わずにPythonで直接書くことができます。ただし、入出力例を5個程度準備しないと思ったように動かないため、入出力例を定義するのは手間がかかります。入出力例を準備する際には、意図した動作を確認できるように、多様なケースをカバーするように努めましょう。また、テスト駆動開発のようなアプローチも有益であると考えられます。</p></div></article>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({startOnLoad: true});</script>
+</body></html>
